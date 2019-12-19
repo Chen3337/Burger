@@ -8,9 +8,9 @@ var orm = {
             cb(result);
         });
     },
-    insertOne: function (name, devoured, cb) {
-        var query = "INSERT INTO burgers (burger_name, devoured) VALUE ( ? , ?)";
-        connection.query(query, [name, devoured] ,function (err, result) {
+    insertOne: function (name, cb) {
+        var query = "INSERT INTO burgers (burger_name) VALUE ( ? )";
+        connection.query(query, name ,function (err, result) {
             if (err) throw err;
             cb(result);
         });

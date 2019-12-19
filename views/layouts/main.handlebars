@@ -52,7 +52,20 @@
         var textArea = $("#burgerName");
         button.on("click", function(){
             var burgerName = textArea.val();
-            console.log(burgerName);
+            aPostCall(burgerName);
         });
+
+        function aPostCall(burgerName){
+            var burger = {
+                name: burgerName
+            }
+            $.ajax("/api/burger",{
+                type : "POST",
+                data : burger
+            }).then(function(res){
+                
+            });
+        }
+        
     </script>
 </html>
