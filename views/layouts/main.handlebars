@@ -54,7 +54,7 @@
             var burgerName = textArea.val();
             aPostCall(burgerName);
         });
-
+        aGetCall();
         function aPostCall(burgerName){
             var burger = {
                 name: burgerName
@@ -65,6 +65,13 @@
             }).then(function(res){
                 
             });
+        }
+        function aGetCall(){
+            $.ajax("/api/burger",{
+                type : "GET"
+            }).then(function(res){
+                console.log(res);
+            })
         }
         
     </script>
