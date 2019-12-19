@@ -36,6 +36,8 @@
         {{!-- textbox and submit button area --}}
         <div class="row">
             <div class="col-md-12">
+                <br>
+                <br>
                 <textarea id="burgerName" cols="50" rows="4"></textarea>
                 <br>
                 <br>
@@ -50,11 +52,13 @@
     <script>
         var button = $("#button");
         var textArea = $("#burgerName");
+        var beforeDisplay = $("#beforeDiv");
+        var beforeBtn = $("#buttonsDiv");
+        var afterDisplay = $("#afterDiv");
         button.on("click", function(){
             var burgerName = textArea.val();
             aPostCall(burgerName);
         });
-        aGetCall();
         function aPostCall(burgerName){
             var burger = {
                 name: burgerName
@@ -70,9 +74,30 @@
             $.ajax("/api/burger",{
                 type : "GET"
             }).then(function(res){
-                console.log(res);
+                displayBurgers(res);
             })
         }
-        
+        function displayBurgers(burgers){
+            for(i=0; i < burgers.length; i++){
+                var newDiv = $("<div>");
+                newDiv.html(burgers[i].id + ". " + burgers[i].burger_name);
+                newDiv.addClass("burgertags");
+                if(burgers[i].devoured){
+                    
+                    afterDisplay.append(newDiv);
+                }
+                else{
+                    beforeDisplay.append(newDiv);
+                    var newBtn = $("<button>");
+                    newBtn.text("Devoure!!");
+                    newBtn.attr("burgerId", burgers[i].id);
+                    newBtn.addClass("btn btn-danger buttons");
+                    beforeBtn.append(newBtn);
+
+                }
+                
+            }
+        }
+        aGetCall();
     </script>
 </html>
