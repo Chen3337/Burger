@@ -3,18 +3,19 @@ var textArea = $("#burgerName");
 var beforeDisplay = $("#beforeDiv");
 var beforeBtn = $("#buttonsDiv");
 var afterDisplay = $("#afterDiv");
+// when the submit button is clicked
 button.on("click", function () {
     var burgerName = textArea.val();
     textArea.val("");
     aPostCall(burgerName);
 });
-
+// when the devoused button is click
 beforeBtn.on("click", ".buttons", function () {
     var burgerId = $(this).attr("burgerid");
 
     updatingDevoure(burgerId);
 });
-
+// a post call that will add a new burger name to the database using api
 function aPostCall(burgerName) {
     var burger = {
         name: burgerName
@@ -29,6 +30,7 @@ function aPostCall(burgerName) {
         aGetCall();
     });
 }
+// api call to get all information about burgers
 function aGetCall() {
     $.ajax("/api/burger", {
         type: "GET"
@@ -36,6 +38,7 @@ function aGetCall() {
         displayBurgers(res);
     })
 }
+// this will use the information get from the api to display it to user
 function displayBurgers(burgers) {
     for (i = 0; i < burgers.length; i++) {
         var newDiv = $("<div>");
@@ -55,6 +58,7 @@ function displayBurgers(burgers) {
         }
     }
 }
+// this will change the devoured to true in database.
 function updatingDevoure(id) {
     $.ajax({
         url: "/api/burger/" + id,
@@ -66,6 +70,7 @@ function updatingDevoure(id) {
         aGetCall();
     });
 }
+// run aGetCall when the page is done loading
 $(document).ready(function () {
     aGetCall();
 });
