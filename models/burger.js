@@ -14,7 +14,7 @@ var burger = {
     });
   },
   update: function(column, newValue, id, cb) {
-    orm.update(column, newValue, id, function(res) {
+    orm.updateOne(column, newValue, id, function(res) {
       cb(res);
     });
   }

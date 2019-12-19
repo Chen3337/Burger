@@ -18,6 +18,12 @@ router.get("/api/burger", function(req, res){
         res.json(result);
     });
 });
+// updating the burger to true in Devoure column
+router.put("/api/burger/:id", function(req, res){
+    burger.update("devoured", true, req.params.id, function(result){
+        res.json(result);
+    })
+});
 
 
 module.exports = router;
