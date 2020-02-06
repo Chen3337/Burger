@@ -4,10 +4,31 @@ var beforeDisplay = $("#beforeDiv");
 var beforeBtn = $("#buttonsDiv");
 var afterDisplay = $("#afterDiv");
 // when the submit button is clicked
+if(localStorage.getItem("Burgers")){
+    var OfflineBurgers = JSON.parse(localStorage.getItem("Burgers"));
+    if (navigator.onLine) {
+        for(i = 0; i < OfflineBurgers.length; i++){
+            aPostCall(OfflineBurgers[i]);
+        }
+        localStorage.clear();
+    }
+}
+else{
+    var OfflineBurgers = [];
+}
+
 button.on("click", function () {
     var burgerName = textArea.val();
     textArea.val("");
-    aPostCall(burgerName);
+    if (navigator.onLine) {
+        aPostCall(burgerName);
+    }
+    else{
+        OfflineBurgers.push(burgerName);
+        localStorage.setItem("Burgers" ,JSON.stringify(OfflineBurgers));
+        offlineList();
+    }
+    
 });
 // when the devoused button is click
 beforeBtn.on("click", ".buttons", function () {
@@ -24,9 +45,7 @@ function aPostCall(burgerName) {
         type: "POST",
         data: burger
     }).then(function (res) {
-        beforeBtn.html("");
-        beforeDisplay.html("");
-        afterDisplay.html("");
+
         aGetCall();
     });
 }
@@ -40,6 +59,9 @@ function aGetCall() {
 }
 // this will use the information get from the api to display it to user
 function displayBurgers(burgers) {
+    beforeBtn.html("");
+    beforeDisplay.html("");
+    afterDisplay.html("");
     for (i = 0; i < burgers.length; i++) {
         var newDiv = $("<div>");
         newDiv.html(burgers[i].id + ". " + burgers[i].burger_name);
@@ -70,7 +92,20 @@ function updatingDevoure(id) {
         aGetCall();
     });
 }
+
+function offlineList(){
+    var offlineListBox = $("#offlineList");
+    offlineListBox.html("");
+    for(i=0; i < OfflineBurgers.length; i++){
+        var list = $("<li>");
+        list.html(OfflineBurgers[i]);
+        offlineListBox.append(list);
+    }
+
+}
 // run aGetCall when the page is done loading
 $(document).ready(function () {
-    aGetCall();
+    if (navigator.onLine) {
+        aGetCall();
+    }
 });
